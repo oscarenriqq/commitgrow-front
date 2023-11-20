@@ -24,6 +24,8 @@ import { CalendarIcon, ArrowForwardIcon } from '@chakra-ui/icons'
 
 import { useAuth } from "../context/AuthContext";
 import { colors } from "./utils/config";
+import verifyToken from "./utils/verifyToken";
+import { useNavigate } from "react-router-dom";
 
 function ModalContract({ contractId, setContractId, setContracts, useFetchContracts }) {
     const [contract, setContract] = useState([]);
@@ -37,6 +39,8 @@ function ModalContract({ contractId, setContractId, setContracts, useFetchContra
 
     const { isOpen, onOpen, onClose } = useDisclosure();
     const { token } = useAuth();
+
+    const navigate = useNavigate()
 
     useEffect(() => {
         if (inputDelete === habitName) {
@@ -55,7 +59,12 @@ function ModalContract({ contractId, setContractId, setContracts, useFetchContra
                     Authorization: `Bearer ${token}`,
                 },
             })
-            .then((response) => response.json())
+            .then((response) => {
+                const isValid = verifyToken(response)
+                if (!isValid)
+                    navigate('/')
+                return response.json()
+            })
             .then((data) => {
                 setContract(data);
                 setLoading(false)
@@ -76,7 +85,10 @@ function ModalContract({ contractId, setContractId, setContracts, useFetchContra
                 Authorization: `Bearer ${token}`,
             },
         })
-        .then((response) => response.json())
+        .then((response) => {
+            verifyToken(response)
+            return response.json()
+        })
         .then((data) => {
             useFetchContracts(token, setContracts)
             handleClose()

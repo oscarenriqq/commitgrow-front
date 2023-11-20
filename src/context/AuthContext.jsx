@@ -11,12 +11,8 @@ export function AuthProvider({ children }) {
         setUserId(newUserId)
     }
 
-    const verifyToken = () => {
-        console.log('verify')
-    }
-    
     return (
-        <AuthContext.Provider value={{ token, userId, login, verifyToken }}>
+        <AuthContext.Provider value={{ token, userId, login }}>
             {children}
         </AuthContext.Provider>
     )

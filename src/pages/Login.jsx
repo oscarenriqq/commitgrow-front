@@ -40,6 +40,7 @@ function Login() {
 
     axios.post(`${import.meta.env.VITE_API_URL}/auth/login`, info)
     .then((res) => {
+
       const token = res.data.access_token
       const user_id = res.data.user_id
 

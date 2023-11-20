@@ -28,6 +28,8 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import useCustomToast from "./utils/useCustomToast.js";
 import { colors } from "./utils/config.js";
+import verifyToken from "./utils/verifyToken.js";
+import { useNavigate } from "react-router-dom";
 
 function AddContractButton({ useFetchContracts, setContracts}) {
   const [tasks, setTasks] = useState()
@@ -38,6 +40,7 @@ function AddContractButton({ useFetchContracts, setContracts}) {
   const showToast = useCustomToast()
   const { token } = useAuth()
   const dateNow = Date.now()
+  const navigate = useNavigate()
 
   const {
     reset,
@@ -54,6 +57,11 @@ function AddContractButton({ useFetchContracts, setContracts}) {
       },
     })
     .then((response) => {
+
+      const isValid = verifyToken(response)
+      if (!isValid)
+        navigate('/')
+
       if (response.status === 400) {
         setTasks([])
       }
@@ -100,6 +108,10 @@ function AddContractButton({ useFetchContracts, setContracts}) {
       body: JSON.stringify(info),
     })
     .then((response) => {
+      const isValid = verifyToken(response)
+      if (!isValid)
+        navigate('/')
+      
       if (response.status === 400) {
         showToast('No se pudo crear el contrato', 'Solo puede tener un máximo de 3 contratos activos.', 'error')
         throw new Error("No se pudo crear el contrato")

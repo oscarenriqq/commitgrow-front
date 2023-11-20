@@ -1,4 +1,4 @@
-import { Box, Flex, Link, Text } from "@chakra-ui/react";
+import { Container, Box, Flex, Link, Text } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { colors } from './utils/config'
 
@@ -13,12 +13,14 @@ function Layout() {
 
   return (
     <Box w={"100%"} p={3} bg={colors.first} color={colors.fourth}>
-      <Flex align={"center"} justify={"space-between"}>
-        <Text fontWeight={600}>CommitGrow.</Text>
-        <Text fontSize={"sm"}>
-          <Link onClick={handleLogout}>Cerrar sesión</Link>
-        </Text>
-      </Flex>
+      <Container>
+        <Flex align={"center"} justify={"space-between"}>
+          <Text fontWeight={600}>CommitGrow.</Text>
+          <Text fontSize={"sm"}>
+            <Link onClick={handleLogout}>Cerrar sesión</Link>
+          </Text>
+        </Flex>
+      </Container>
     </Box>
   );
 }

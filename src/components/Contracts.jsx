@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { List, ListItem, Box, Text, Badge, VStack } from "@chakra-ui/react";
-import { CheckCircleIcon, WarningTwoIcon } from "@chakra-ui/icons";
 import { useAuth } from "../context/AuthContext";
 import ModalContract from "./ModalContract";
 import useFetchContracts from "./utils/useFetchContracts";

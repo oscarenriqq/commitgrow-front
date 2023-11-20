@@ -1,21 +1,23 @@
 import { useEffect, useState } from 'react'
 import { Button, useToast } from '@chakra-ui/react'
-import axios from 'axios';
 
 import { useAuth } from '../context/AuthContext';
 import useCustomToast from "./utils/useCustomToast.js";
 
 import { colors } from './utils/config'
+import verifyToken from './utils/verifyToken.js';
+import { useNavigate } from 'react-router-dom';
 
 function ButtonTodoist({ isConnected, setIsConnected }) {
 
     const [lockButton, setLockButton] = useState(false)
     const toast = useToast()
+    const navigate = useNavigate()
 
     const showToast = useCustomToast()
 
     useEffect(() => {
-        axios({
+        fetch({
             url: `${import.meta.env.VITE_API_URL}/todoist/verify-integration`,
             method: 'get',
             headers: {
@@ -23,7 +25,10 @@ function ButtonTodoist({ isConnected, setIsConnected }) {
             },
         })
         .then((res) => {
-            console.log(res)
+            const isValid = verifyToken(res)
+            if (!isValid)
+                navigate('/')
+        
             setIsConnected(true)
         })
         .catch((err) => {
@@ -46,7 +51,7 @@ function ButtonTodoist({ isConnected, setIsConnected }) {
             'secret_string': secret_string
         }
 
-        axios({
+        fetch({
             url: `${import.meta.env.VITE_API_URL}/todoist/authorize`,
             method: 'post',
             headers: {
@@ -54,9 +59,14 @@ function ButtonTodoist({ isConnected, setIsConnected }) {
                 'Content-Type': 'application/json',
                 Authorization: `Bearer ${token}`,
             },
-            data: data
+            body: data
         })
         .then((res) => {
+
+            const isValid = verifyToken(res)
+            if (!isValid)
+                navigate('/')
+
             const url_todoist = res.data.url
             window.location.href = url_todoist
         })

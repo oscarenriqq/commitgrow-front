@@ -12,13 +12,16 @@ import { useDisclosure } from "@chakra-ui/react";
 import React from "react";
 import axios from "axios";
 import { useAuth } from "../context/AuthContext";
-import useCustomToast from "./utils/useCustomToast.js";
 import { colors } from './utils/config'
+import verifyToken from "./utils/verifyToken";
+import { useNavigate } from "react-router-dom";
 
 function DeactivateIntegration({ setIsConnected }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = React.useRef();
   const { token } = useAuth();
+
+  const navigate = useNavigate()
 
   function deactivateIntegration() {
     axios
@@ -31,6 +34,11 @@ function DeactivateIntegration({ setIsConnected }) {
         }
       )
       .then((res) => {
+        const isValid = verifyToken(response)
+
+        if (!isValid)
+          navigate('/')
+
         onClose();
         setIsConnected(false)
       })
