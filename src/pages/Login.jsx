@@ -76,7 +76,7 @@ function Login() {
     >
       <VStack spacing={4} align="flex-start" w="full">
         <VStack spacing={1} align={["center"]} w={"full"}>
-          <Image src={"../../src/assets/Cg.png"} boxSize={'100px'} objectFit={'cover'} alt="CommitGrow logo" borderRadius={20}/>
+          <Image src={"/src/assets/Cg.png"} boxSize={'100px'} objectFit={'cover'} alt="CommitGrow logo" borderRadius={20}/>
           <Heading>CommitGrow.</Heading>
           <Text> Inicia sesión para continuar.</Text>
         </VStack>
