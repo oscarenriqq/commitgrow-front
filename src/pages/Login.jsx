@@ -32,27 +32,36 @@ function Login() {
   } = useForm();
 
   function onSubmit(data) {
-
-    const info = qs.stringify({
-      username: data.email,
-      password: data.password
+    const info = new URLSearchParams();
+    info.append('username', data.email);
+    info.append('password', data.password);
+  
+    fetch(`${import.meta.env.VITE_API_URL}/auth/login`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: info,
     })
-
-    axios.post(`${import.meta.env.VITE_API_URL}/auth/login`, info)
-    .then((res) => {
-
-      const token = res.data.access_token
-      const user_id = res.data.user_id
-
-      localStorage.setItem('token', token);
-      localStorage.setItem('user_id', user_id);
-
-      login(token, user_id)
-      navigate("/profile")
-    })
-    .catch((err) => {
-      toastError("Ha ocurrio un error", err.message)
-    })
+      .then((res) => {
+        if (res.status === 400) {
+          toastError("Ha ocurrido un error", 'Credenciales incorrectas');
+        }
+        return res.json();
+      })
+      .then((data) => {
+        const token = data.access_token;
+        const user_id = data.user_id;
+  
+        localStorage.setItem('token', token);
+        localStorage.setItem('user_id', user_id);
+  
+        login(token, user_id);
+        navigate('/profile');
+      })
+      .catch((err) => {
+        throw new Error(err.message);
+      });
   }
 
   return (
@@ -98,10 +107,6 @@ function Login() {
               type="password"
               {...register("password", {
                 required: "Este campo es requerido",
-                minLength: {
-                  value: 6,
-                  message: "La contraseña debe tener al menos 6 caracteres",
-                },
               })}
             />
             <FormErrorMessage>

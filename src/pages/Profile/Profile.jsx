@@ -10,7 +10,7 @@ import { colors } from '../../components/utils/config'
 
 function Profile() {
 
-  const [isConnected, setIsConnected] = useState()
+  const [isConnected, setIsConnected] = useState(false)
   const [contracts, setContracts] = useState([]);
 
   return (

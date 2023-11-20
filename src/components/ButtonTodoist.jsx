@@ -13,32 +13,30 @@ function ButtonTodoist({ isConnected, setIsConnected }) {
     const [lockButton, setLockButton] = useState(false)
     const toast = useToast()
     const navigate = useNavigate()
-
     const showToast = useCustomToast()
+    const { token } = useAuth()
 
     useEffect(() => {
-        fetch({
-            url: `${import.meta.env.VITE_API_URL}/todoist/verify-integration`,
-            method: 'get',
+        fetch(`${import.meta.env.VITE_API_URL}/todoist/verify-integration`, {
+            method: 'GET',
             headers: {
                 Authorization: `Bearer ${token}`,
             },
         })
-        .then((res) => {
-            const isValid = verifyToken(res)
+        .then((response) => {
+            const isValid = verifyToken(response)
+
             if (!isValid)
                 navigate('/')
         
-            setIsConnected(true)
+            setIsConnected(response.status === 200)
         })
         .catch((err) => {
-            console.log(err.response.data)
+            console.log(err.message)
             setIsConnected(false)
         })
 
     }, [])
-
-    const { token } = useAuth()
 
     function redirectToTodoist() {
 
@@ -51,9 +49,8 @@ function ButtonTodoist({ isConnected, setIsConnected }) {
             'secret_string': secret_string
         }
 
-        fetch({
-            url: `${import.meta.env.VITE_API_URL}/todoist/authorize`,
-            method: 'post',
+        fetch(`${import.meta.env.VITE_API_URL}/todoist/authorize`, {
+            method: 'POST',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
@@ -69,8 +66,13 @@ function ButtonTodoist({ isConnected, setIsConnected }) {
 
             const url_todoist = res.data.url
             window.location.href = url_todoist
+            return res.json()
+        })
+        .then((data) => {
+            console.log(data)
         })
         .catch((err) => {
+            console.log(err)
             if (err.response.status === 400) {
                 showToast('Conexión Todoist', 'Ya existe una conexión con Todoist', 'warning')
             }

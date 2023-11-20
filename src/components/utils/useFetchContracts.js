@@ -14,7 +14,6 @@ export default function useFetchContracts (token, setContracts) {
           if (!isValid) {
             navigate('/')
           }
-          
           return response.json()
         })
         .then((data) => {
