@@ -19,7 +19,7 @@ function Layout() {
         <Container>
           <Flex align={"center"} justify={"space-between"}>
             <Text fontWeight={600}>CommitGrow.</Text>
-            <Flex gap={4}>
+            <Flex className="nav-buttons" gap={4}>
               <Button        
                 bg={colors.third} 
                 color={colors.fourth} 
