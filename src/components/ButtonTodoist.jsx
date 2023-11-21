@@ -1,9 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Button, useToast } from '@chakra-ui/react'
-
 import { useAuth } from '../context/AuthContext';
 import useCustomToast from "./utils/useCustomToast.js";
-
 import { colors } from './utils/config'
 import verifyToken from './utils/verifyToken.js';
 import { useNavigate } from 'react-router-dom';
