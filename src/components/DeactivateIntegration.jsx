@@ -15,19 +15,17 @@ import { useAuth } from "../context/AuthContext";
 import { colors } from './utils/config'
 import verifyToken from "./utils/verifyToken";
 import { useNavigate } from "react-router-dom";
+import useCustomToast from "./utils/useCustomToast.js";
 
 function DeactivateIntegration({ setIsConnected }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = React.useRef();
   const { token } = useAuth();
-
+  const showToast = useCustomToast()
   const navigate = useNavigate()
 
   function deactivateIntegration() {
-    axios
-      .delete(
-        `${import.meta.env.VITE_API_URL}/todoist/deactivate-integration`,
-        {
+    fetch(`${import.meta.env.VITE_API_URL}/todoist/deactivate-integration`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
