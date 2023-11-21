@@ -72,9 +72,10 @@ function ButtonTodoist({ isConnected, setIsConnected }) {
             return res.json()
         })
         .then((data) => {
-            console.log(data)
-            const url_todoist = data.url
-            window.location.href = url_todoist
+            if (data.url) {
+                const url_todoist = data.url
+                window.location.href = url_todoist
+            }
         })
         .catch((err) => {
             console.log(err)
