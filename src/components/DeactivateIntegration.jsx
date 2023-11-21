@@ -26,13 +26,14 @@ function DeactivateIntegration({ setIsConnected }) {
 
   function deactivateIntegration() {
     fetch(`${import.meta.env.VITE_API_URL}/todoist/deactivate-integration`, {
+          method: 'DELETE',
           headers: {
             Authorization: `Bearer ${token}`,
           },
         }
       )
       .then((res) => {
-        const isValid = verifyToken(response)
+        const isValid = verifyToken(res)
 
         if (!isValid)
           navigate('/')
