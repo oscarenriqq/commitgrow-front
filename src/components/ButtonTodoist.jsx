@@ -47,8 +47,6 @@ function ButtonTodoist({ isConnected, setIsConnected }) {
             'secret_string': secret_string
         }
 
-        console.log(data)
-
         fetch(`${import.meta.env.VITE_API_URL}/todoist/authorize`, {
             method: 'POST',
             headers: {
@@ -66,6 +64,7 @@ function ButtonTodoist({ isConnected, setIsConnected }) {
             return res.json()
         })
         .then((data) => {
+            console.log(data)
             const url_todoist = data.url
             window.location.href = url_todoist
         })
