@@ -26,8 +26,8 @@ function Layout() {
                 size={'xs'}
                 onClick={onOpen}
               >¿Cómo funciona?</Button>
-              <Text fontSize={"sm"}>
-                <Link onClick={handleLogout}>Cerrar sesión</Link>
+              <Text fontSize={"sm"} fontWeight={600}>
+                <Link onClick={handleLogout}>Salir</Link>
               </Text>
             </Flex>
           </Flex>

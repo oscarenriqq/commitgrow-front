@@ -21,8 +21,9 @@ html body {
 }
 
 @media (max-width: 768px) {
-  .nav-buttons {
-      flex-direction: column-reverse;
-      align-items: center;
-  }
+  .nav-buttons button {
+    font-size: 10px;
+  } 
+
+
 }
