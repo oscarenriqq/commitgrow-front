@@ -76,7 +76,7 @@ function DeactivateIntegration({ setIsConnected }) {
             </AlertDialogBody>
 
             <AlertDialogFooter>
-              <Button ref={cancelRef} onClick={onClose} bg={colors.third} color={colors.first}>
+              <Button ref={cancelRef} onClick={onClose} bg={colors.fourth} color={colors.first}>
                 Cancelar
               </Button>
               <Button bg={colors.first} color={colors.fourth} onClick={deactivateIntegration} ml={3}>
