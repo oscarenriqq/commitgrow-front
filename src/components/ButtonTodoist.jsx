@@ -47,7 +47,10 @@ function ButtonTodoist({ isConnected, setIsConnected }) {
             'secret_string': secret_string
         }
 
+        const controller = new AbortController()
+
         fetch(`${import.meta.env.VITE_API_URL}/todoist/authorize`, {
+            signal: controller.signal,
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -57,10 +60,15 @@ function ButtonTodoist({ isConnected, setIsConnected }) {
             body: JSON.stringify(data)
         })
         .then((res) => {
-
             const isValid = verifyToken(res)
             if (!isValid)
                 navigate('/')
+
+            if (res.status === 400) {
+                showToast('Conexión Todoist', 'Ya existe una conexión con Todoist', 'warning')
+                controller.abort()
+            }
+
             return res.json()
         })
         .then((data) => {
