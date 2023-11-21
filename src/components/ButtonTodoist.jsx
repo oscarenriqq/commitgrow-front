@@ -49,6 +49,8 @@ function ButtonTodoist({ isConnected, setIsConnected }) {
             'secret_string': secret_string
         }
 
+        console.log(data)
+
         fetch(`${import.meta.env.VITE_API_URL}/todoist/authorize`, {
             method: 'POST',
             headers: {
@@ -56,20 +58,18 @@ function ButtonTodoist({ isConnected, setIsConnected }) {
                 'Content-Type': 'application/json',
                 Authorization: `Bearer ${token}`,
             },
-            body: data
+            body: JSON.stringify(data)
         })
         .then((res) => {
 
             const isValid = verifyToken(res)
             if (!isValid)
                 navigate('/')
-
-            const url_todoist = res.data.url
-            window.location.href = url_todoist
             return res.json()
         })
         .then((data) => {
-            console.log(data)
+            const url_todoist = data.url
+            window.location.href = url_todoist
         })
         .catch((err) => {
             console.log(err)
